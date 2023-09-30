@@ -59,7 +59,9 @@ class AdminRole extends Model
             'admin_role_menus',
             'role_id',
             'menu_id'
-        )->with(['children'])->orderBy('navigation_sort');
+        )->with(['children'=>function($query){
+            $query->where('');
+        }])->orderBy('navigation_sort');
     }
 
     function searchBuild($param = [], $with = [])

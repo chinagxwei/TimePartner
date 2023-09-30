@@ -34,6 +34,8 @@ export class Navigation {
 
   navigation_sort: number = 0;
 
+  menu_show: number = 0;
+
   icon?: string;
 
   select: boolean = false;

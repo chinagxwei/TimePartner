@@ -17,6 +17,7 @@ return new class extends Migration
             $table->uuid('id')->unique()->primary();
             $table->uuid('wallet_id')->nullable()->comment('钱包ID');
             $table->uuid('organization_id')->nullable()->comment('机构ID');
+            $table->uuid('order_income_config_id')->nullable()->comment('订单收益配置ID');
             $table->string('remark',128)->nullable()->comment('备注');
             $table->string('mobile',18)->index()->nullable()->comment('联系电话');
             $table->string('promotion_sn',32)->index()->nullable()->comment('推广序列号');

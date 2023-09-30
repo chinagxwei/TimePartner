@@ -35,6 +35,7 @@ export class AuthService {
         map(res => {
           if (res.code === 200) {
             this.user = res.data;
+            window.localStorage.setItem('backend_authorized', JSON.stringify(this.user));
             this.localLogin();
             return {type:true,msg:res.message};
           } else {
@@ -49,7 +50,6 @@ export class AuthService {
       if (!this.isExpiresIn) {
         this.localLogout();
       } else {
-        window.localStorage.setItem('backend_authorized', JSON.stringify(this.user));
         const redirect = this.redirectUrl ? this.router.parseUrl(this.redirectUrl) : this.defaultUrl;
         const navigationExtras: NavigationExtras = {
           queryParamsHandling: 'preserve',
@@ -69,13 +69,13 @@ export class AuthService {
     return !!this.user;
   }
 
-    get username() {
-        return this.user?.userinfo?.nickname;
-    }
+  get username() {
+    return this.user?.userinfo?.nickname;
+  }
 
-    get navigations() {
-        return this.user?.userinfo?.role?.navigations
-    }
+  get navigations() {
+    return this.user?.userinfo?.role?.navigations
+  }
 
   public logout() {
     return this.http
@@ -83,6 +83,8 @@ export class AuthService {
   }
 
   public localLogout() {
+    // console.log(this.user);
+    // console.log(this.isExpiresIn);
     const navigationExtras: NavigationExtras = {
       queryParams: {type: 'logout'},
     };
