@@ -13,18 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('system_agreements', function (Blueprint $table) {
+        Schema::create('venues', function (Blueprint $table) {
             $table->increments('id')->unsigned();
-            $table->string('title',128)->nullable()->comment('标题');
-            $table->text('content')->nullable()->comment('内容');
-            $table->tinyInteger('type')->default(0)->nullable()->comment('类型');
-            $table->tinyInteger('show')->unsigned()->default(0)->nullable()->comment('是否显示 0不显示 1显示');
+            $table->string('title', 128)->index()->nullable()->comment('标题');
+            $table->uuid('order_income_config_id')->nullable()->comment('订单收益配置ID');
             $table->integer('created_at')->unsigned()->nullable();
             $table->integer('updated_at')->unsigned()->nullable();
             $table->integer('created_by')->index()->unsigned()->nullable()->comment('用户ID');
             $table->integer('updated_by')->index()->unsigned()->nullable()->comment('用户ID');
             $table->integer('deleted_at')->unsigned()->nullable();
-            $table->comment('系统协议表');
+            $table->comment('场地表');
         });
     }
 
@@ -35,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('system_agreements');
+        Schema::dropIfExists('venues');
     }
 };

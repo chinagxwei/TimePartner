@@ -13,18 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('system_agreements', function (Blueprint $table) {
-            $table->increments('id')->unsigned();
-            $table->string('title',128)->nullable()->comment('标题');
-            $table->text('content')->nullable()->comment('内容');
-            $table->tinyInteger('type')->default(0)->nullable()->comment('类型');
-            $table->tinyInteger('show')->unsigned()->default(0)->nullable()->comment('是否显示 0不显示 1显示');
+        Schema::create('schedule_targets', function (Blueprint $table) {
+            $table->uuid('schedule_id')->index()->nullable()->comment('日程安排ID');
+            $table->integer('target_id')->index()->nullable()->comment('标签ID');
             $table->integer('created_at')->unsigned()->nullable();
             $table->integer('updated_at')->unsigned()->nullable();
             $table->integer('created_by')->index()->unsigned()->nullable()->comment('用户ID');
             $table->integer('updated_by')->index()->unsigned()->nullable()->comment('用户ID');
             $table->integer('deleted_at')->unsigned()->nullable();
-            $table->comment('系统协议表');
+            $table->primary(['member_id', 'schedule_id']);
+            $table->comment('关联标签表');
         });
     }
 
@@ -35,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('system_agreements');
+        Schema::dropIfExists('schedule_targets');
     }
 };

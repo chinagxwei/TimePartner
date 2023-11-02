@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('member_ban_logs', function (Blueprint $table) {
+        Schema::create('member_bans', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->uuid('member_id')->index();
             $table->integer('started_at')->unsigned()->nullable()->comment('开始时间');

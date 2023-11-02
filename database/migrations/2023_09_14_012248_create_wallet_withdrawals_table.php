@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('wallet_withdrawals', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->uuid('wallet_id')->index()->nullable()->comment('钱包ID');
+            $table->integer('withdraw_account_id')->unsigned()->index()->nullable()->comment('提现账户ID');
             $table->string('order_sn',64)->index()->nullable()->comment('订单编号');
             $table->string('third_party_payment_sn',64)->nullable()->comment('第三方支付ID');
             $table->string('third_party_merchant_id',18)->nullable()->comment('第三方支付商户号');
@@ -26,7 +27,7 @@ return new class extends Migration
             $table->integer('created_by')->index()->unsigned()->nullable()->comment('用户ID');
             $table->integer('updated_by')->index()->unsigned()->nullable()->comment('用户ID');
             $table->integer('deleted_at')->unsigned()->nullable();
-            $table->comment('钱包提款表');
+            $table->comment('钱包提款申请表');
         });
     }
 

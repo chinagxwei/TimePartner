@@ -19,8 +19,6 @@ return new class extends Migration
             $table->decimal('vip_commission',10)->unsigned()->nullable()->comment('VIP佣金');
             $table->decimal('recharge_commission',10)->unsigned()->nullable()->comment('充值佣金');
             $table->decimal('consume_commission',10)->unsigned()->nullable()->comment('消费佣金');
-            $table->decimal('level_1_play_commission',10)->unsigned()->nullable()->comment('比赛1级奖励佣金');
-            $table->decimal('level_2_play_commission',10)->unsigned()->nullable()->comment('比赛2级奖励佣金');
             $table->decimal('agent_commission',10)->unsigned()->nullable()->comment('代理佣金');
             $table->decimal('withdraw_point',10)->unsigned()->nullable()->comment('提现费率');
             $table->decimal('vip_withdraw_point',10)->unsigned()->nullable()->comment('VIP提现费率');
