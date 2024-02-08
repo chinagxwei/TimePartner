@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('shop_order_income_configs', function (Blueprint $table) {
             $table->increments('id')->unsigned();
+            $table->integer('unit_id')->unsigned()->default(0)->comment('单位ID');
             $table->string('title', 128)->comment('标题');
             $table->decimal('vip_commission',10)->unsigned()->nullable()->comment('VIP佣金');
             $table->decimal('recharge_commission',10)->unsigned()->nullable()->comment('充值佣金');
