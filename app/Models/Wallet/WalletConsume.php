@@ -2,6 +2,7 @@
 
 namespace App\Models\Wallet;
 
+use App\Models\BaseDataModel;
 use App\Models\Trait\CreatedRelation;
 use App\Models\Trait\MemberRelation;
 use App\Models\Trait\OrderRelation;
@@ -10,7 +11,6 @@ use App\Models\Trait\SignData;
 use App\Models\Trait\WalletRelation;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property Carbon created_at
  * @property WalletRecharge walletRecharge
  */
-class WalletConsume extends Model
+class WalletConsume extends BaseDataModel
 {
     use HasFactory, SoftDeletes, MemberRelation, CreatedRelation, OrderRelation, WalletRelation, SignData, SearchData;
 

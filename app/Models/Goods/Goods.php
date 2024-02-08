@@ -2,6 +2,8 @@
 
 namespace App\Models\Goods;
 
+use App\Models\BaseDataModel;
+use App\Models\Competition\CompetitionRoomLink;
 use App\Models\System\Unit;
 use App\Models\Trait\CreatedRelation;
 use App\Models\Trait\SearchData;
@@ -10,11 +12,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * @property string id
  * @property string title
  * @property string description
+ * @property int goods_type
+ * @property int relation_category
+ * @property int relation_id
  * @property int stock
  * @property int status
  * @property int bind
@@ -25,12 +31,16 @@ use Illuminate\Support\Carbon;
  * @property int created_by
  * @property int updated_by
  * @property Carbon created_at
+ * @property ProductVIP vip
+ * @property ProductRecharge recharge
  */
-class Goods extends Model
+class Goods extends BaseDataModel
 {
     use HasFactory, SoftDeletes, Uuids, CreatedRelation, SearchData;
 
     protected $table = 'goods';
+
+    protected $keyType = 'string';
     /**
      * 指定是否模型应该被戳记时间。
      *
@@ -50,7 +60,8 @@ class Goods extends Model
         'title', 'description', 'stock',
         'status', 'bind', 'started_at',
         'ended_at', 'sort', 'remark',
-        'remark', 'created_by', 'updated_by'
+        'remark', 'created_by', 'updated_by',
+        'goods_type', 'relation_category', 'relation_id'
     ];
 
     protected $hidden = [
@@ -60,13 +71,30 @@ class Goods extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function prices(){
+    public function prices()
+    {
         return $this->belongsToMany(
             Unit::class,
             'goods_prices',
             'unit_id',
             'goods_id'
         );
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function vip()
+    {
+        return $this->hasOne(ProductVIP::class, 'id', 'relation_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function recharge()
+    {
+        return $this->hasOne(ProductRecharge::class, 'id', 'relation_id');
     }
 
     function searchBuild($param = [], $with = [])
@@ -89,6 +117,18 @@ class Goods extends Model
             $build = $build->where('bind', $this->bind);
         }
 
+        if (isset($this->goods_type)) {
+            $build = $build->where('goods_type', $this->goods_type);
+        }
+
+        if (isset($this->relation_category)) {
+            $build = $build->where('relation_category', $this->relation_category);
+        }
+
+        if (isset($this->relation_id)) {
+            $build = $build->where('relation_id', $this->relation_id);
+        }
+
         if (!empty($param['started_at']) && (count($param['started_at']) === 2)) {
             $build = $build->whereBetween('started_at', [$param['started_at'][0], $param['started_at'][1]]);
         }
@@ -97,6 +137,6 @@ class Goods extends Model
             $build = $build->whereBetween('ended_at', [$param['ended_at'][0], $param['ended_at'][1]]);
         }
 
-        return $build->with($with)->orderBy('id', 'desc');
+        return $build->with($with);
     }
 }

@@ -29,7 +29,7 @@ class AppPublishLog extends Model
      *
      * @var string
      */
-    protected $table = 'app_update_logs';
+    protected $table = 'app_publish_logs';
 
     /**
      * 指定是否模型应该被戳记时间。

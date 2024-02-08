@@ -2,6 +2,8 @@
 
 namespace App\Models\Wallet;
 
+use App\Models\BaseDataModel;
+use App\Models\Order\Order;
 use App\Models\Trait\CreatedRelation;
 use App\Models\Trait\OrderRelation;
 use App\Models\Trait\SearchData;
@@ -10,12 +12,12 @@ use App\Models\Trait\WalletRelation;
 use Carbon\Carbon;
 use Emadadly\LaravelUuid\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property string id
  * @property string wallet_id
+ * @property int withdraw_account_id
  * @property string order_sn
  * @property string third_party_payment_sn
  * @property string third_party_merchant_id
@@ -24,12 +26,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int created_by
  * @property int updated_by
  * @property Carbon created_at
+ * @property WalletWithdrawalAccount withdrawAccount
  */
-class WalletWithdrawal extends Model
+class WalletWithdrawal extends BaseDataModel
 {
     use HasFactory, SoftDeletes, Uuids, CreatedRelation, WalletRelation, OrderRelation, SearchData, SignData;
 
     protected $table = 'wallet_withdrawals';
+
+    protected $keyType = 'string';
     /**
      * 指定是否模型应该被戳记时间。
      *
@@ -46,13 +51,21 @@ class WalletWithdrawal extends Model
 
     protected $fillable = [
         'wallet_id', 'order_sn', 'third_party_payment_sn',
-        'third_party_merchant_id', 'amount', 'sign',
+        'third_party_merchant_id', 'withdraw_account_id', 'amount', 'sign',
         'created_by', 'updated_by'
     ];
 
     protected $hidden = [
         'deleted_at', 'updated_at'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function withdrawAccount()
+    {
+        return $this->hasOne(WalletWithdrawalAccount::class, 'id', 'withdraw_account_id');
+    }
 
     function searchBuild($param = [], $with = [])
     {

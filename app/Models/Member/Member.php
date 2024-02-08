@@ -3,6 +3,7 @@
 namespace App\Models\Member;
 
 use App\Models\Admin\AdminNavigation;
+use App\Models\Competition\CompetitionGame;
 use App\Models\Order\OrderIncomeConfig;
 use App\Models\Trait\CreatedRelation;
 use App\Models\Trait\SearchData;
@@ -33,12 +34,17 @@ use Illuminate\Support\Collection;
  * @property OrderIncomeConfig incomeConfig
  * @property Wallet wallet
  * @property Member parent
+ * @property MemberAddress addresses
+ * @property MemberBan banInfo
+ * @property MemberVIP vipInfo
  */
 class Member extends Model
 {
     use HasFactory, SoftDeletes, Uuids, SearchData, WalletRelation, CreatedRelation;
 
     protected $table = 'members';
+
+    protected $keyType = 'string';
     /**
      * 指定是否模型应该被戳记时间。
      *
@@ -100,6 +106,44 @@ class Member extends Model
         return $this->hasOne(Member::class, "id", "parent_id");
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function addresses()
+    {
+        return $this->hasMany(MemberAddress::class, "member_id", "id");
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function banInfo()
+    {
+        return $this->hasOne(MemberBan::class, "member_id", "id")
+            ->where('started_at', '<', time())
+            ->where('ended_at', '>', time());
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function vipInfo()
+    {
+        return $this->hasOne(MemberVIP::class, "member_id", "id")
+            ->where('started_at', '<=', time())
+            ->where('ended_at', '>=', time());
+    }
+
+    /**
+     * @param $user_id
+     * @param $with
+     * @return \Illuminate\Database\Eloquent\Builder|Model|object|null|static
+     */
+    public static function findOneByUser($user_id, $with = [])
+    {
+        return self::query()->where('created_by', $user_id)->with($with)->first();
+    }
+
     function searchBuild($param = [], $with = [])
     {
         // TODO: Implement searchBuild() method.
@@ -121,7 +165,7 @@ class Member extends Model
             $build = $build->where('develop', $this->develop);
         }
 
-        if (!empty($this->register_type)) {
+        if (isset($this->register_type)) {
             $build = $build->where('register_type', $this->register_type);
         }
 

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Models\Goods;
+namespace App\Models\Wallet;
 
-use App\Models\BaseDataModel;
 use App\Models\Trait\CreatedRelation;
+use App\Models\Trait\MemberRelation;
 use App\Models\Trait\SearchData;
 use App\Models\Trait\UnitRelation;
 use Carbon\Carbon;
+use Emadadly\LaravelUuid\Uuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -14,18 +15,20 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @property int id
  * @property string title
- * @property int denomination
- * @property int give_amount
+ * @property int amount
+ * @property int vip_amount
  * @property int unit_id
  * @property int show
  * @property int created_by
  * @property Carbon created_at
+ *
  */
-class ProductRecharge extends BaseDataModel
+class WalletWithdrawalAmountConfig extends Model
 {
-    use HasFactory, SoftDeletes, CreatedRelation, UnitRelation, SearchData;
+    use HasFactory, SoftDeletes, MemberRelation, CreatedRelation, SearchData, UnitRelation;
 
-    protected $table = 'product_recharges';
+    protected $table = 'wallet_withdrawal_amount_configs';
+
     /**
      * 指定是否模型应该被戳记时间。
      *
@@ -40,9 +43,9 @@ class ProductRecharge extends BaseDataModel
      */
     protected $dateFormat = 'U';
 
-
     protected $fillable = [
-        'title', 'denomination', 'give_amount', 'unit_id', 'show', 'created_by'
+        'title', 'amount', 'vip_amount',
+        'unit_id', 'show'
     ];
 
     protected $hidden = [
@@ -57,6 +60,7 @@ class ProductRecharge extends BaseDataModel
         if (!empty($this->title)) {
             $build = $build->where('title', 'like', "%{$this->title}%");
         }
+
         if (isset($this->show)) {
             $build = $build->where('show', $this->show);
         }

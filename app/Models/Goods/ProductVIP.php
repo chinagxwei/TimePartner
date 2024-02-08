@@ -2,6 +2,7 @@
 
 namespace App\Models\Goods;
 
+use App\Models\BaseDataModel;
 use App\Models\Trait\CreatedRelation;
 use App\Models\Trait\SearchData;
 use Carbon\Carbon;
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int created_by
  * @property Carbon created_at
  */
-class ProductVIP extends Model
+class ProductVIP extends BaseDataModel
 {
     use HasFactory, SoftDeletes, CreatedRelation,SearchData;
 
@@ -53,7 +54,9 @@ class ProductVIP extends Model
         if (!empty($this->title)) {
             $build = $build->where('title', 'like', "%{$this->title}%");
         }
-
+        if (isset($this->show)) {
+            $build = $build->where('show', $this->show);
+        }
         return $build->with($with)->orderBy('id', 'desc');
     }
 }

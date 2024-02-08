@@ -61,6 +61,26 @@ export const WALLET_WITHDRAWAL_VIEW = `${HOST}/api/${API_VERSION}/${API_ADMIN_MO
 export const WALLET_WITHDRAWAL_DELETE = `${HOST}/api/${API_VERSION}/${API_ADMIN_MODULE}/wallet-withdrawal/delete`;
 
 /**
+ * 钱包提现金额配置列表
+ */
+export const WALLET_WITHDRAWAL_AMOUNT_CONFIG_LIST = `${HOST}/api/${API_VERSION}/${API_ADMIN_MODULE}/wallet-withdrawal-amount-config/index`;
+
+/**
+ * 保存钱包提现金额配置
+ */
+export const WALLET_WITHDRAWAL_AMOUNT_CONFIG_SAVE = `${HOST}/api/${API_VERSION}/${API_ADMIN_MODULE}/wallet-withdrawal-amount-config/save`;
+
+/**
+ * 钱包提现金额配置详情
+ */
+export const WALLET_WITHDRAWAL_AMOUNT_CONFIG_VIEW = `${HOST}/api/${API_VERSION}/${API_ADMIN_MODULE}/wallet-withdrawal-amount-config/view`;
+
+/**
+ * 删除钱包提现金额配置
+ */
+export const WALLET_WITHDRAWAL_AMOUNT_CONFIG_DELETE = `${HOST}/api/${API_VERSION}/${API_ADMIN_MODULE}/wallet-withdrawal-amount-config/delete`;
+
+/**
  * 钱包提现账户列表
  */
 export const WALLET_WITHDRAWAL_ACCOUNT_LIST = `${HOST}/api/${API_VERSION}/${API_ADMIN_MODULE}/wallet-withdrawal-account/index`;
@@ -93,29 +113,29 @@ export const WALLET_CONSUME_SAVE = `${HOST}/api/${API_VERSION}/${API_ADMIN_MODUL
 /**
  * 钱包消费详情
  */
-export const WALLET_CONSUME_VIEW = `${HOST}/api/${API_VERSION}/wallet-consume/view`;
+export const WALLET_CONSUME_VIEW = `${HOST}/api/${API_VERSION}/${API_ADMIN_MODULE}/wallet-consume/view`;
 
 /**
  * 删除钱包消费
  */
-export const WALLET_CONSUME_DELETE = `${HOST}/api/${API_VERSION}/wallet-consume/delete`;
+export const WALLET_CONSUME_DELETE = `${HOST}/api/${API_VERSION}/${API_ADMIN_MODULE}/wallet-consume/delete`;
 
 /**
  * 钱包日志列表
  */
-export const WALLET_LOG_LIST = `${HOST}/api/${API_VERSION}/wallet-log/index`;
+export const WALLET_LOG_LIST = `${HOST}/api/${API_VERSION}/${API_ADMIN_MODULE}/wallet-log/index`;
 
 /**
  * 保存钱包日志
  */
-export const WALLET_LOG_SAVE = `${HOST}/api/${API_VERSION}/wallet-log/save`;
+export const WALLET_LOG_SAVE = `${HOST}/api/${API_VERSION}/${API_ADMIN_MODULE}/wallet-log/save`;
 
 /**
  * 钱包日志详情
  */
-export const WALLET_LOG_VIEW = `${HOST}/api/${API_VERSION}/wallet-log/view`;
+export const WALLET_LOG_VIEW = `${HOST}/api/${API_VERSION}/${API_ADMIN_MODULE}/wallet-log/view`;
 
 /**
  * 删除钱包日志
  */
-export const WALLET_LOG_DELETE = `${HOST}/api/${API_VERSION}/wallet-log/delete`;
+export const WALLET_LOG_DELETE = `${HOST}/api/${API_VERSION}/${API_ADMIN_MODULE}/wallet-log/delete`;

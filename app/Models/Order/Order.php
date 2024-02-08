@@ -42,6 +42,8 @@ class Order extends Model
     use HasFactory, SoftDeletes, Uuids, CreatedRelation, MemberRelation, UnitRelation, SearchData, SignData;
 
     protected $table = 'orders';
+
+    protected $keyType = 'string';
     /**
      * 指定是否模型应该被戳记时间。
      *

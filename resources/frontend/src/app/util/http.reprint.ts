@@ -12,64 +12,68 @@ import {AuthService} from "../services/auth.service";
 })
 export class HttpReprint {
 
-  httpOptions = {
-    headers: new HttpHeaders({})
-  };
+    httpOptions = {
+        headers: new HttpHeaders({})
+    };
 
-  constructor(private http: HttpClient, private authService: AuthService, private modal: NzModalService) {
-    this.httpOptions.headers = this.httpOptions.headers.set('Authorization', `Bearer ${this.authService?.user?.access_token}`);
-  }
+    constructor(
+        private http: HttpClient,
+        private authService: AuthService,
+        private modal: NzModalService) {
+    }
 
 
-  public setHeader(name: string, value: string): HttpReprint {
-    this.httpOptions.headers = this.httpOptions.headers.set(name, value);
-    return this;
-  }
+    public setHeader(name: string, value: string): HttpReprint {
+        this.httpOptions.headers = this.httpOptions.headers.set(name, value);
+        return this;
+    }
 
-  public originalHttpPost<T>(url: string, body?: any) {
-    return this.http
-      .post<ServerResponse<T>>(url, body);
-  }
+    public originalHttpPost<T>(url: string, body?: any) {
+        return this.http
+            .post<ServerResponse<T>>(url, body);
+    }
 
-  public originalHttpGet<T>(url: string) {
-    return this.http
-      .get<ServerResponse<T>>(url);
-  }
+    public originalHttpGet<T>(url: string) {
+        return this.http
+            .get<ServerResponse<T>>(url);
+    }
 
-  public httpPost<T>(url: string, body?: any): Observable<ServerResponse<T>> {
-    return this.http
-      .post<ServerResponse<T>>(url, body, this.httpOptions)
-      .pipe(
-        tap(value => {
-            if (value.code === ResponseCode.NOT_LOGIN || !this.authService.isExpiresIn) {
-              this.alert('登录超时');
-              this.authService.localLogout();
-            }
-          }
-        )
-      );
-  }
+    public httpPost<T>(url: string, body?: any): Observable<ServerResponse<T>> {
+        this.httpOptions.headers = this.httpOptions.headers.set('Authorization', `Bearer ${this.authService?.user?.access_token}`);
+        return this.http
+            .post<ServerResponse<T>>(url, body, this.httpOptions)
+            .pipe(
+                tap(value => {
+                        if (value.code === ResponseCode.NOT_LOGIN || !this.authService.isExpiresIn) {
+                            this.alert('登录超时');
+                            this.authService.localLogout();
+                        }
+                    }
+                )
+            );
+    }
 
-  public httpGet<T>(url: string): Observable<ServerResponse<T>> {
-    return this.http
-      .get<ServerResponse<T>>(url, this.httpOptions)
-      .pipe(
-        tap(value => {
-            if (value.code === ResponseCode.NOT_LOGIN || !this.authService.isExpiresIn) {
-              this.alert('登录超时');
-              this.authService.localLogout();
-            }
-          }
-        )
-      );
-  }
+    public httpGet<T>(url: string): Observable<ServerResponse<T>> {
+        this.httpOptions.headers = this.httpOptions.headers.set('Authorization', `Bearer ${this.authService?.user?.access_token}`);
+        return this.http
+            .get<ServerResponse<T>>(url, this.httpOptions)
+            .pipe(
+                tap(value => {
+                        if (value.code === ResponseCode.NOT_LOGIN || !this.authService.isExpiresIn) {
+                            this.alert('登录超时');
+                            this.authService.localLogout();
+                        }
+                    }
+                )
+            );
+    }
 
-  private alert(message: string) {
-    this.modal.error({
-      nzTitle: '错误',
-      nzContent: message
-    });
-  }
+    private alert(message: string) {
+        this.modal.error({
+            nzTitle: '错误',
+            nzContent: message
+        });
+    }
 }
 
 export enum ResponseCode {

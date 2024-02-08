@@ -2,7 +2,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {NavigationExtras, Router} from "@angular/router";
 import {AuthenticationRequest, User} from "../entity/user";
 import {ServerResponse} from "../entity/server-response";
-import {map} from "rxjs";
+import {map, tap} from "rxjs";
 import * as moment from "moment";
 import {USER_LOGIN, USER_LOGOUT} from "../config/system.url";
 import {Injectable} from "@angular/core";
@@ -35,7 +35,6 @@ export class AuthService {
         map(res => {
           if (res.code === 200) {
             this.user = res.data;
-            window.localStorage.setItem('backend_authorized', JSON.stringify(this.user));
             this.localLogin();
             return {type:true,msg:res.message};
           } else {
@@ -50,6 +49,7 @@ export class AuthService {
       if (!this.isExpiresIn) {
         this.localLogout();
       } else {
+        window.localStorage.setItem('backend_authorized', JSON.stringify(this.user));
         const redirect = this.redirectUrl ? this.router.parseUrl(this.redirectUrl) : this.defaultUrl;
         const navigationExtras: NavigationExtras = {
           queryParamsHandling: 'preserve',
@@ -69,13 +69,13 @@ export class AuthService {
     return !!this.user;
   }
 
-  get username() {
-    return this.user?.userinfo?.nickname;
-  }
+    get username() {
+        return this.user?.userinfo?.nickname;
+    }
 
-  get navigations() {
-    return this.user?.userinfo?.role?.navigations
-  }
+    get navigations() {
+        return this.user?.userinfo?.role?.navigations
+    }
 
   public logout() {
     return this.http
@@ -83,14 +83,11 @@ export class AuthService {
   }
 
   public localLogout() {
-    // console.log(this.user);
-    // console.log(this.isExpiresIn);
     const navigationExtras: NavigationExtras = {
       queryParams: {type: 'logout'},
     };
     if (this.isExpiresIn) {
       this.logout().subscribe(() => {
-        this.user = undefined;
         window.localStorage.removeItem('backend_authorized');
         this.router.navigate(['/login'], navigationExtras);
       })
@@ -98,6 +95,7 @@ export class AuthService {
       window.localStorage.removeItem('backend_authorized');
       this.router.navigate(['/login'], navigationExtras);
     }
+    this.user = undefined;
   }
 
   private getHttpHeaders() {

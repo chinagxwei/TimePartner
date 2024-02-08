@@ -26,7 +26,7 @@ class OrderIncome extends Model
 {
     use HasFactory, SoftDeletes, MemberRelation, CreatedRelation, SearchData, SignData;
 
-    protected $table = 'order_income';
+    protected $table = 'order_incomes';
     /**
      * 指定是否模型应该被戳记时间。
      *

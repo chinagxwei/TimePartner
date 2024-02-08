@@ -3,19 +3,19 @@ export class Member {
   wallet_id: string = "";
   order_income_config_id: string = "";
   remark: string = "";
-  parent_id: string = "";
+  parent_id?: string = "";
   belong_agent_node: string = "";
   mobile: string = "";
   promotion_sn: string = "";
-  develop: number = 0;
-  register_type: number = 0;
+  develop?: number;
+  register_type?: number;
   created_at?: number;
 }
 
 export class MemberAddress {
   id?: number;
   member_id: string = "";
-  default: number = 0;
+  default?: number;
   contact: string = "";
   mobile: string = "";
   province_name: string = "";
@@ -46,7 +46,7 @@ export class MemberPrizeLog {
   id?: string;
   order_sn: string = "";
   member_id: string = "";
-  prize_type:number = 1;
+  prize_type: number = 1;
   created_at?: number;
 }
 
@@ -54,8 +54,8 @@ export class MemberLuckDrawsLog {
   id?: number;
   order_sn: string = "";
   member_id: string = "";
-  total:number = 0;
-  stock:number = 0;
+  total: number = 0;
+  stock: number = 0;
   created_at?: number;
 }
 
@@ -72,7 +72,7 @@ export class MemberQuest {
   member_id: string = "";
   quest_id: number = 0;
   progress: number = 0;
-  complete: number = 0;
+  complete?: number;
   created_at?: number;
 }
 
